@@ -83,7 +83,21 @@ def signout(request):
 @login_required
 def dashboard(request):
     products_list = Product.objects.all()
-    return render(request, "products/products.html", {"products": products_list})
+    orders_list = Order.objects.filter(user=request.user)
+    cart_items = Cart.objects.filter(user=request.user)
+    posts_list = Post.objects.all()
+    return render(request, "accounts/dashboard.html", {
+        "products": products_list,
+        "recent_products": products_list[:3],
+        "total_products": products_list.count(),
+        "orders": orders_list,
+        "recent_orders": orders_list[:3],
+        "orders_count": orders_list.count(),
+        "cart_items": cart_items,
+        "cart_count": cart_items.count(),
+        "total_posts": posts_list.count(),
+        "username": request.user.username,
+    })
 
 
 def add(request):
