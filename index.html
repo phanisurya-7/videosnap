@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account | VideoSnap</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -24,7 +24,7 @@
         }
 
         .auth-card {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(30, 41, 59, 0.75);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
@@ -40,7 +40,7 @@
         }
 
         .brand-logo {
-            font-size: 1.8rem;
+            font-size: 1.9rem;
             font-weight: 800;
             background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
             -webkit-background-clip: text;
@@ -48,6 +48,7 @@
             text-decoration: none;
             display: inline-block;
             margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
         }
 
         .brand-header h2 {
@@ -207,11 +208,12 @@
                 return;
             }
 
-            msgBox.innerHTML = '<div class="alert alert-success">Account created successfully! Welcome, ' + username + '.</div>';
+            localStorage.setItem('videosnap_user', username);
+            msgBox.innerHTML = '<div class="alert alert-success">Account created successfully! Redirecting to Dashboard...</div>';
             msgBox.style.display = 'block';
             setTimeout(function() {
-                window.location.href = 'login.html';
-            }, 1200);
+                window.location.href = 'dashboard.html';
+            }, 1000);
         });
     </script>
 </body>

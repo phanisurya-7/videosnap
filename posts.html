@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Posts | VideoSnap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-main);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        .create-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .create-card h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+            margin-bottom: 0.85rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #6366f1;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-submit {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.95;
+        }
+
+        .posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .post-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .post-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .post-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .post-author {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .post-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .post-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .post-body {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="dashboard.html" class="brand">⚡ VideoSnap</a>
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="products.html" class="nav-link">Store</a>
+                <a href="cart.html" class="nav-link">Cart</a>
+                <a href="posts.html" class="nav-link active" style="color: white;">Posts</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="create-card">
+            <h2>Create Community Post</h2>
+            <form id="post-form">
+                <input type="text" id="post-title" class="form-control" placeholder="Post Title (e.g. My new drone video edit)" required>
+                <textarea id="post-content" class="form-control" placeholder="Share your video editing tips, LUT feedback, or workflow..." required></textarea>
+                <button type="submit" class="btn-submit">Publish Post</button>
+            </form>
+        </div>
+
+        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1.25rem;">Community Feed</h2>
+        <div id="posts-container" class="posts-list">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 VideoSnap. All rights reserved.
+    </footer>
+
+    <script>
+        let defaultPosts = [
+            {
+                author: 'Alex Rivera',
+                time: '2 hours ago',
+                title: 'Color grading Sony S-Log3 with VideoSnap LUTs',
+                content: 'Just finished a travel commercial using the Teal & Orange and Golden Hour LUTs from the Cinematic Pack. The skin tone retention is unreal!'
+            },
+            {
+                author: 'Sarah Chen',
+                time: '5 hours ago',
+                title: 'DaVinci Resolve 19 Transition pack test',
+                content: 'Tested the seamless zoom transitions on 4K 60fps timeline. Zero frame drops and render times were surprisingly fast.'
+            },
+            {
+                author: 'Marcus Vance',
+                time: 'Yesterday',
+                title: 'Sound Design tip for YouTube intros',
+                content: 'Layering low sub-booms with subtle risers creates massive punch before your opening hook. The Ultimate Sound FX pack has great risers for this.'
+            }
+        ];
+
+        let posts = JSON.parse(localStorage.getItem('videosnap_posts') || JSON.stringify(defaultPosts));
+
+        function renderPosts() {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = posts.map(post => `
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">${post.author.charAt(0).toUpperCase()}</div>
+                        <div>
+                            <div class="post-author">${post.author}</div>
+                            <div class="post-time">${post.time}</div>
+                        </div>
+                    </div>
+                    <div class="post-title">${post.title}</div>
+                    <div class="post-body">${post.content}</div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('post-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = localStorage.getItem('videosnap_user') || 'Creator';
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+
+            posts.unshift({
+                author: user,
+                time: 'Just now',
+                title: title,
+                content: content
+            });
+
+            localStorage.setItem('videosnap_posts', JSON.stringify(posts));
+            renderPosts();
+
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+        });
+
+        renderPosts();
+    </script>
+</body>
+</html>

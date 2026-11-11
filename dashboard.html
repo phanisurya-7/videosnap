@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | VideoSnap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --surface-color: rgba(18, 26, 43, 0.75);
+            --surface-hover: rgba(30, 41, 69, 0.85);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --card-border-glow: rgba(99, 102, 241, 0.35);
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --accent-glow: 0 0 25px rgba(99, 102, 241, 0.35);
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.12) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.92rem;
+            transition: all 0.2s ease;
+            position: relative;
+            padding: 0.4rem 0.2rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #ffffff;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+        }
+
+        .badge {
+            background: var(--accent-gradient);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.45rem;
+            border-radius: 20px;
+            margin-left: 0.35rem;
+            font-weight: 700;
+        }
+
+        .user-nav-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.35rem 0.8rem 0.35rem 0.4rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        .avatar-circle-sm {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .btn-signout {
+            background: rgba(239, 68, 68, 0.12);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            padding: 0.45rem 0.9rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-signout:hover {
+            background: rgba(239, 68, 68, 0.22);
+            color: #ffffff;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2.25rem 1.5rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Hero Card */
+        .welcome-card {
+            background: var(--surface-color);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 2.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(99, 102, 241, 0.12);
+            border-radius: 50%;
+            filter: blur(60px);
+            pointer-events: none;
+        }
+
+        .welcome-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 1;
+        }
+
+        .avatar-circle-lg {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            box-shadow: var(--accent-glow);
+            border: 3px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .welcome-text h1 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .badge-verified {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .welcome-text p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .welcome-actions {
+            display: flex;
+            gap: 0.85rem;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+            padding: 0.75rem 1.4rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+            padding: 0.75rem 1.4rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface-color);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--card-shadow);
+            transition: all 0.25s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--card-border-glow);
+            background: var(--surface-hover);
+        }
+
+        .stat-info h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-number {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.1;
+        }
+
+        .stat-subtext {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .icon-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+        .icon-purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .icon-emerald { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+        .icon-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.75rem;
+        }
+
+        .panel {
+            background: var(--surface-color);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1.75rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.85rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .panel-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-link {
+            font-size: 0.85rem;
+            color: #818cf8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .panel-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Order List */
+        .order-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .order-item {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .order-item:hover {
+            border-color: var(--card-border-glow);
+            background: rgba(30, 41, 59, 0.6);
+        }
+
+        .order-product-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #f8fafc;
+        }
+
+        .order-product-price {
+            font-size: 0.85rem;
+            color: #818cf8;
+            font-weight: 700;
+            margin-top: 0.2rem;
+        }
+
+        .status-badge {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #86efac;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.65rem;
+            border-radius: 12px;
+        }
+
+        /* Mini Product Grid */
+        .mini-product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .mini-product-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .mini-product-card:hover {
+            border-color: var(--card-border-glow);
+            transform: translateY(-2px);
+        }
+
+        .mini-product-img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            background: #1e293b;
+        }
+
+        .mini-product-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mini-product-price {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #818cf8;
+        }
+
+        /* Apps Grid */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .app-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 1.25rem 1rem;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .app-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--card-border-glow);
+            background: var(--surface-hover);
+        }
+
+        .app-card-icon {
+            font-size: 1.8rem;
+        }
+
+        .app-card-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .app-card-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.2;
+        }
+
+        footer {
+            border-top: 1px solid var(--card-border);
+            padding: 1.75rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .welcome-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.25rem;
+            }
+            .welcome-actions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="dashboard.html" class="brand">⚡ VideoSnap</a>
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="products.html" class="nav-link">Store</a>
+                <a href="cart.html" class="nav-link">
+                    Cart <span id="nav-cart-badge" class="badge">0</span>
+                </a>
+                <a href="order.html" class="nav-link">Orders</a>
+                <a href="chatbot.html" class="nav-link">Chatbot</a>
+                <a href="posts.html" class="nav-link">Posts</a>
+                
+                <div class="user-nav-badge">
+                    <div id="user-avatar-sm" class="avatar-circle-sm">U</div>
+                    <span id="user-display-name">Creator</span>
+                </div>
+                <a href="login.html" class="btn-signout" onclick="localStorage.removeItem('videosnap_user')">Sign Out</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Welcome Hero Card -->
+        <section class="welcome-card">
+            <div class="welcome-left">
+                <div id="user-avatar-lg" class="avatar-circle-lg">U</div>
+                <div class="welcome-text">
+                    <h1>
+                        Welcome back, <span id="hero-username">Creator</span>!
+                        <span class="badge-verified">✓ Active Account</span>
+                    </h1>
+                    <p>Manage your orders, explore the store, and launch AI tools from your central hub.</p>
+                </div>
+            </div>
+            <div class="welcome-actions">
+                <a href="products.html" class="btn-primary">🛍️ Browse Store</a>
+                <a href="chatbot.html" class="btn-secondary">🤖 AI Chatbot</a>
+            </div>
+        </section>
+
+        <!-- Stats Overview -->
+        <section class="stats-grid">
+            <a href="order.html" class="stat-card">
+                <div class="stat-info">
+                    <h3>My Orders</h3>
+                    <div id="stat-orders" class="stat-number">1</div>
+                    <div class="stat-subtext">Completed purchases</div>
+                </div>
+                <div class="stat-icon icon-blue">📦</div>
+            </a>
+
+            <a href="cart.html" class="stat-card">
+                <div class="stat-info">
+                    <h3>Cart Items</h3>
+                    <div id="stat-cart" class="stat-number">0</div>
+                    <div class="stat-subtext">Ready for checkout</div>
+                </div>
+                <div class="stat-icon icon-purple">🛒</div>
+            </a>
+
+            <a href="products.html" class="stat-card">
+                <div class="stat-info">
+                    <h3>Available Products</h3>
+                    <div class="stat-number">3</div>
+                    <div class="stat-subtext">In store catalog</div>
+                </div>
+                <div class="stat-icon icon-emerald">🏷️</div>
+            </a>
+
+            <a href="posts.html" class="stat-card">
+                <div class="stat-info">
+                    <h3>Community Posts</h3>
+                    <div id="stat-posts" class="stat-number">3</div>
+                    <div class="stat-subtext">Shared by community</div>
+                </div>
+                <div class="stat-icon icon-amber">📝</div>
+            </a>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Left Column: Activity & Products -->
+            <div>
+                <!-- Recent Orders Panel -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span>📦</span> Recent Orders
+                        </div>
+                        <a href="order.html" class="panel-link">View all orders →</a>
+                    </div>
+
+                    <div id="recent-orders-list" class="order-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Featured Products Panel -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span>✨</span> Featured in Store
+                        </div>
+                        <a href="products.html" class="panel-link">Go to Store →</a>
+                    </div>
+
+                    <div class="mini-product-grid">
+                        <a href="products.html" class="mini-product-card">
+                            <img src="media/products/luts_pack.png" alt="LUTs Pack" class="mini-product-img">
+                            <div class="mini-product-title">Cinematic LUTs Pack</div>
+                            <div class="mini-product-price">$29.99</div>
+                        </a>
+                        <a href="products.html" class="mini-product-card">
+                            <img src="media/products/sound_fx.png" alt="Sound FX" class="mini-product-img">
+                            <div class="mini-product-title">Ultimate Sound FX Pack</div>
+                            <div class="mini-product-price">$19.99</div>
+                        </a>
+                        <a href="products.html" class="mini-product-card">
+                            <img src="media/products/transitions.png" alt="Transitions" class="mini-product-img">
+                            <div class="mini-product-title">Pro Video Transitions</div>
+                            <div class="mini-product-price">$39.99</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Quick Apps -->
+            <div>
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">
+                            <span>🚀</span> Platform Apps
+                        </div>
+                    </div>
+
+                    <div class="apps-grid">
+                        <a href="chatbot.html" class="app-card">
+                            <span class="app-card-icon">🤖</span>
+                            <span class="app-card-title">AI Chatbot</span>
+                            <span class="app-card-desc">Ask video editing assistant</span>
+                        </a>
+
+                        <a href="products.html" class="app-card">
+                            <span class="app-card-icon">🛍️</span>
+                            <span class="app-card-title">Store</span>
+                            <span class="app-card-desc">Digital assets & tools</span>
+                        </a>
+
+                        <a href="cart.html" class="app-card">
+                            <span class="app-card-icon">🛒</span>
+                            <span class="app-card-title">My Cart</span>
+                            <span class="app-card-desc">Manage cart items</span>
+                        </a>
+
+                        <a href="posts.html" class="app-card">
+                            <span class="app-card-icon">📰</span>
+                            <span class="app-card-title">Posts</span>
+                            <span class="app-card-desc">Community discussions</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 VideoSnap Platform. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Load User
+        const user = localStorage.getItem('videosnap_user') || 'Creator';
+        document.getElementById('hero-username').textContent = user;
+        document.getElementById('user-display-name').textContent = user;
+        const initial = user.charAt(0).toUpperCase();
+        document.getElementById('user-avatar-sm').textContent = initial;
+        document.getElementById('user-avatar-lg').textContent = initial;
+
+        // Load Cart Count
+        const cart = JSON.parse(localStorage.getItem('videosnap_cart') || '[]');
+        document.getElementById('nav-cart-badge').textContent = cart.length;
+        document.getElementById('stat-cart').textContent = cart.length;
+
+        // Load Orders
+        let orders = JSON.parse(localStorage.getItem('videosnap_orders') || '[]');
+        if (orders.length === 0) {
+            orders = [{ name: 'Cinematic LUTs Pack', price: '29.99' }];
+            localStorage.setItem('videosnap_orders', JSON.stringify(orders));
+        }
+        document.getElementById('stat-orders').textContent = orders.length;
+
+        const orderContainer = document.getElementById('recent-orders-list');
+        orderContainer.innerHTML = orders.slice(0, 3).map(order => `
+            <div class="order-item">
+                <div>
+                    <div class="order-product-name">${order.name}</div>
+                    <div class="order-product-price">$${order.price}</div>
+                </div>
+                <span class="status-badge">Completed</span>
+            </div>
+        `).join('');
+
+        // Load Posts Count
+        const posts = JSON.parse(localStorage.getItem('videosnap_posts') || '[{}, {}, {}]');
+        document.getElementById('stat-posts').textContent = posts.length;
+    </script>
+</body>
+</html>
